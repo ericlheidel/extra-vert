@@ -48,6 +48,9 @@ List<Plant> plants = new List<Plant>()
     },
 };
 
+Random random = new Random();
+int randomInteger = random.Next(1, plants.Count + 1);
+
 string greeting = @"
 Welcome to ExtraVerts!
 Your home for used houseplants!
@@ -172,6 +175,13 @@ void InvalidOption()
     Console.WriteLine("\nInvalid option...\n");
 }
 
+void RandomPlant()
+{
+    Plant randomPlant = plants[randomInteger];
+
+    Console.WriteLine($"\n{randomPlant.Species}, {randomPlant.City}, {randomPlant.LightNeeds}, {randomPlant.AskingPrice}\n");
+}
+
 void Menu()
 {
     Console.WriteLine(@"Main Menu:
@@ -179,6 +189,7 @@ void Menu()
 2. Post a plant to be adopted
 3. Adopt a plant
 4. De-List a plant
+5. View a RANDOM Plant
 0. Exit
 
 Please choose an option:");
@@ -206,6 +217,11 @@ Please choose an option:");
         case "4":
             Console.Clear();
             DeListAPlant();
+            Menu();
+            break;
+        case "5":
+            Console.Clear();
+            RandomPlant();
             Menu();
             break;
         case "0":
