@@ -95,12 +95,71 @@ void PostAPlant()
 
 void AdoptAPlant()
 {
-    Console.WriteLine("\nYou chose option 3\n");
+
+
+    for (int i = 0; i < plants.Count; i++)
+    {
+        if (!plants[i].Sold)
+        {
+            Console.WriteLine($"{i + 1}. {plants[i].Species}");
+        }
+    }
+
+    Plant chosenPlant = null;
+
+    while (chosenPlant == null)
+    {
+        Console.WriteLine("\nPlease enter the plant number you wish to adopt:\n");
+        try
+        {
+            int response = int.Parse(Console.ReadLine().Trim());
+            chosenPlant = plants[response - 1];
+
+            if (chosenPlant.Sold == true)
+            {
+                Console.WriteLine("\nThis plant is not available...\n");
+            }
+
+            chosenPlant.Sold = true;
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("\nPlease type only integers!\n");
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Console.WriteLine("\nPlease choose an existing item only!\n");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            Console.WriteLine("\nDo better!\n");
+        }
+    }
 }
 
 void DeListAPlant()
 {
-    Console.WriteLine("\nYou chose option 4\n");
+    // Console.WriteLine("\nYou chose option 4\n");
+    for (int i = 0; i < plants.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {plants[i].Species}");
+    }
+
+    Console.WriteLine("\nPlease choose a plant to de-list:\n");
+    try
+    {
+        int response = int.Parse(Console.ReadLine().Trim());
+
+        plants.RemoveAt(response - 1);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex);
+        Console.WriteLine("\nDo better!\n");
+    }
+
+
 }
 
 void ExitApp()
