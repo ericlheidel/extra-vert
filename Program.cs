@@ -182,6 +182,31 @@ void RandomPlant()
     Console.WriteLine($"\n{randomPlant.Species}, {randomPlant.City}, {randomPlant.LightNeeds}, {randomPlant.AskingPrice}\n");
 }
 
+void SearchByLightNeeds()
+{
+    Console.WriteLine("\nWhat is the maximum Light Need you'd like to search for? (1 thru 5)");
+
+    int response = int.Parse(Console.ReadLine().Trim());
+
+    List<Plant> filteredByLight = new List<Plant>();
+
+    foreach (Plant plant in plants)
+    {
+        if (response < 1 || response > 5)
+        {
+            Console.WriteLine("\nThis light need option is invalid\n");
+        }
+        if (response >= plant.LightNeeds)
+        {
+            filteredByLight.Add(plant);
+        }
+    }
+    for (int i = 0; i < filteredByLight.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {filteredByLight[i].Species}");
+    }
+}
+
 void Menu()
 {
     Console.WriteLine(@"Main Menu:
@@ -190,6 +215,7 @@ void Menu()
 3. Adopt a plant
 4. De-List a plant
 5. View a RANDOM Plant
+6. Search Plant by Light Needs
 0. Exit
 
 Please choose an option:");
@@ -222,6 +248,11 @@ Please choose an option:");
         case "5":
             Console.Clear();
             RandomPlant();
+            Menu();
+            break;
+        case "6":
+            Console.Clear();
+            SearchByLightNeeds();
             Menu();
             break;
         case "0":
