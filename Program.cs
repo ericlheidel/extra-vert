@@ -9,6 +9,7 @@ List<Plant> plants = new List<Plant>()
         City = "Nashville",
         ZIP = 37377,
         Sold = true,
+        AvailableUntil = new DateTime(2021,12,12)
     },
     new Plant()
     {
@@ -18,6 +19,7 @@ List<Plant> plants = new List<Plant>()
         City = "Chattanooga",
         ZIP = 37209,
         Sold = false,
+        AvailableUntil = new DateTime(2022,12,12)
     },
     new Plant()
     {
@@ -27,6 +29,7 @@ List<Plant> plants = new List<Plant>()
         City = "Memphis",
         ZIP = 37212,
         Sold = true,
+        AvailableUntil = new DateTime(2023,12,12)
     },
     new Plant()
     {
@@ -35,7 +38,8 @@ List<Plant> plants = new List<Plant>()
         AskingPrice = 21.00M,
         City = "Signal Mountain",
         ZIP = 37138,
-        Sold = true,
+        Sold = false,
+        AvailableUntil = new DateTime(2024,12,12)
     },
     new Plant()
     {
@@ -45,6 +49,7 @@ List<Plant> plants = new List<Plant>()
         City = "Knoxville",
         ZIP = 37777,
         Sold = false,
+        AvailableUntil = new DateTime(2025,12,12)
     },
 };
 
@@ -63,8 +68,9 @@ void DisplayAllPlants()
     Console.WriteLine("Plants List:");
 
     for (int i = 0; i < plants.Count; i++)
+
     {
-        Console.WriteLine($"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold ? $"was sold for {plants[i].AskingPrice} dollars" : $"is available for {plants[i].AskingPrice} dollars")}\n");
+        Console.WriteLine($"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold ? $"was sold for {plants[i].AskingPrice} dollars" : $"is available for {plants[i].AskingPrice} dollars")}, Expiration Date: {plants[i].AvailableUntil}\n");
     }
 
 }
@@ -72,37 +78,97 @@ void DisplayAllPlants()
 void PostAPlant()
 {
     // Console.WriteLine("\nYou chose option 2\n");
-    Console.WriteLine("Please enter a species:\n");
+    Console.WriteLine("\nPlease enter a species:\n");
 
     Plant newPlant = new Plant();
 
-    Console.WriteLine("Enter a plant species:\n");
-    newPlant.Species = Console.ReadLine();
+    Console.WriteLine("\nEnter a plant species:\n");
+    newPlant.Species = Console.ReadLine().Trim();
 
-    Console.WriteLine("Enter the plant's light needs (1 for low light, 5 for heavy light)\n");
-    newPlant.LightNeeds = int.Parse(Console.ReadLine());
 
-    Console.WriteLine("Enter an asking price:\n");
-    newPlant.AskingPrice = decimal.Parse(Console.ReadLine());
+    // Console.WriteLine("Enter the plant's light needs (1 for low light, 5 for heavy light)\n");
+    // newPlant.LightNeeds = int.Parse(Console.ReadLine().Trim());
 
-    Console.WriteLine("Enter a city:\n");
-    newPlant.City = Console.ReadLine();
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    int lightNeeds = 0;
 
-    Console.WriteLine("Enter a ZIP:\n");
-    newPlant.ZIP = int.Parse(Console.ReadLine());
+    do
+    {
+        Console.WriteLine("\nEnter the plant's light needs (1 for low light, 5 for heavy light):\n");
+        lightNeeds = int.Parse(Console.ReadLine().Trim());
+
+        try
+        {
+            if (lightNeeds < 1 || lightNeeds > 5)
+            {
+                Console.WriteLine("\nLight needs must be a value between 1 and 5. Please try again.\n");
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("\nInvalid input. Please enter a valid integer.\n");
+            lightNeeds = -1; // Set an invalid value to ensure the loop continues
+        }
+    } while (lightNeeds < 1 || lightNeeds > 5);
+
+    newPlant.LightNeeds = lightNeeds;
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    Console.WriteLine("\nEnter an asking price:\n");
+    newPlant.AskingPrice = decimal.Parse(Console.ReadLine().Trim());
+
+    Console.WriteLine("\nEnter a city:\n");
+    newPlant.City = Console.ReadLine().Trim();
+
+    Console.WriteLine("\nEnter a ZIP:\n");
+    newPlant.ZIP = int.Parse(Console.ReadLine().Trim());
 
     newPlant.Sold = false;
+
+    Console.WriteLine("\nPlease enter an expiration year...\n");
+    int expirationYear = int.Parse(Console.ReadLine().Trim());
+
+    Console.WriteLine("\nPlease enter an expiration month...\n");
+    int expirationMonth = int.Parse(Console.ReadLine().Trim());
+
+    Console.WriteLine("\nPlease enter an expiration day...\n");
+    int expirationDay = int.Parse(Console.ReadLine().Trim());
+
+    newPlant.AvailableUntil = new DateTime(expirationYear, expirationMonth, expirationDay);
 
     plants.Add(newPlant);
 }
 
 void AdoptAPlant()
 {
+    // List<Plant> availablePlants = new List<Plant>();
 
+    // foreach (Plant plant in plants)
+    // {
+    //     if (plant.Sold == false && plant.AvailableUntil >= DateTime.Now)
+    //     {
+    //         availablePlants.Add(plant);
+    //     }
+    // }
+
+    // for (int i = 0; i < availablePlants.Count; i++)
+    // {
+    //     Console.WriteLine($"{i + 1}. {availablePlants[i].Species} in {availablePlants[i].City} {(availablePlants[i].Sold ? $"was sold for {availablePlants[i].AskingPrice} dollars" : $"is available for {availablePlants[i].AskingPrice} dollars")}, Expiration Date: {availablePlants[i].AvailableUntil}\n");
+    // }
+
+    // List<Plant> availablePlants = new List<Plant>();
+
+    // for (int i = 0; i < plants.Count; i++)
+    // {
+    //     if (plants[i].Sold == false && plants[i].AvailableUntil >= DateTime.Now)
+    //     {
+    //         availablePlants.Add(plants[i]);
+    //     }
+    // }
 
     for (int i = 0; i < plants.Count; i++)
     {
-        if (!plants[i].Sold)
+        if (!plants[i].Sold && plants[i].AvailableUntil >= DateTime.Now)
         {
             Console.WriteLine($"{i + 1}. {plants[i].Species}");
         }
