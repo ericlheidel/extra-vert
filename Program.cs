@@ -141,6 +141,8 @@ void PostAPlant()
     }
 
     plants.Add(newPlant);
+    Console.Clear();
+    Console.WriteLine("\nPlant successfully posted...");
 }
 
 void AdoptAPlant()
@@ -310,6 +312,14 @@ void PlantStatistics()
     Console.Write($"\n - The percentage of plants that have been adopted overall is \u001b[4m{plantsAdoptedPercentage}%\u001b[0m\n");
 }
 
+void CSharpMethodPractice()
+{
+    foreach (Plant plant in plants)
+    {
+        Console.WriteLine($"{PlantDetails(plant)}");
+    }
+}
+
 void Menu()
 {
     Console.WriteLine(@$"
@@ -321,6 +331,8 @@ void Menu()
 5. View a RANDOM Plant
 6. Search Plant by Light Needs
 7. See Plant Statistics
+8. C# Method Practice
+9. Clear Window
 0. Exit
 
 Please choose an option:");
@@ -365,6 +377,15 @@ Please choose an option:");
             PlantStatistics();
             Menu();
             break;
+        case "8":
+            Console.Clear();
+            CSharpMethodPractice();
+            Menu();
+            break;
+        case "9":
+            Console.Clear();
+            Menu();
+            break;
         case "0":
             Console.Clear();
             ExitApp();
@@ -375,6 +396,13 @@ Please choose an option:");
             Menu();
             break;
     }
+}
+
+string PlantDetails(Plant plant)
+{
+    string plantString = plant.Species;
+
+    return plantString;
 }
 
 void App()
