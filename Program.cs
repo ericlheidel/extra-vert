@@ -76,8 +76,6 @@ void DisplayAllPlants()
 
 void PostAPlant()
 {
-    Console.WriteLine("\nPlease enter a species:\n");
-
     Plant newPlant = new Plant();
 
     Console.WriteLine("\nEnter a plant species:\n");
@@ -119,16 +117,28 @@ void PostAPlant()
 
     newPlant.Sold = false;
 
-    Console.WriteLine("\nPlease enter an expiration year...\n");
-    int expirationYear = int.Parse(Console.ReadLine().Trim());
 
-    Console.WriteLine("\nPlease enter an expiration month...\n");
-    int expirationMonth = int.Parse(Console.ReadLine().Trim());
+    try
+    {
+        Console.WriteLine("\nPlease enter an expiration year...\n");
+        int expirationYear = int.Parse(Console.ReadLine().Trim());
 
-    Console.WriteLine("\nPlease enter an expiration day...\n");
-    int expirationDay = int.Parse(Console.ReadLine().Trim());
 
-    newPlant.AvailableUntil = new DateTime(expirationYear, expirationMonth, expirationDay);
+        Console.WriteLine("\nPlease enter an expiration month...\n");
+        int expirationMonth = int.Parse(Console.ReadLine().Trim());
+
+        Console.WriteLine("\nPlease enter an expiration day...\n");
+        int expirationDay = int.Parse(Console.ReadLine().Trim());
+
+        newPlant.AvailableUntil = new DateTime(expirationYear, expirationMonth, expirationDay);
+    }
+    catch (ArgumentOutOfRangeException)
+    {
+        Console.Clear();
+        Console.WriteLine("\nDate invalid, please start over...\n");
+        PostAPlant();
+
+    }
 
     plants.Add(newPlant);
 }
@@ -302,8 +312,8 @@ void PlantStatistics()
 
 void Menu()
 {
-    Console.WriteLine(@"
-Main Menu:
+    Console.WriteLine(@$"
+{"\u001b[4mMain Menu:\u001b[0m"}
 1. Display all plants
 2. Post a plant to be adopted
 3. Adopt a plant
