@@ -9,7 +9,7 @@ List<Plant> plants = new List<Plant>()
         City = "Nashville",
         ZIP = 37377,
         Sold = true,
-        AvailableUntil = new DateTime(2021,12,12)
+        AvailableUntil = new DateTime(2022,12,12)
     },
     new Plant()
     {
@@ -18,8 +18,8 @@ List<Plant> plants = new List<Plant>()
         AskingPrice = 17.00M,
         City = "Chattanooga",
         ZIP = 37209,
-        Sold = false,
-        AvailableUntil = new DateTime(2022,12,12)
+        Sold = true,
+        AvailableUntil = new DateTime(2023,12,12)
     },
     new Plant()
     {
@@ -28,7 +28,7 @@ List<Plant> plants = new List<Plant>()
         AskingPrice = 19.00M,
         City = "Memphis",
         ZIP = 37212,
-        Sold = true,
+        Sold = false,
         AvailableUntil = new DateTime(2023,12,12)
     },
     new Plant()
@@ -39,7 +39,7 @@ List<Plant> plants = new List<Plant>()
         City = "Signal Mountain",
         ZIP = 37138,
         Sold = false,
-        AvailableUntil = new DateTime(2024,12,12)
+        AvailableUntil = new DateTime(2025,12,12)
     },
     new Plant()
     {
@@ -49,7 +49,7 @@ List<Plant> plants = new List<Plant>()
         City = "Knoxville",
         ZIP = 37777,
         Sold = false,
-        AvailableUntil = new DateTime(2025,12,12)
+        AvailableUntil = new DateTime(2026,12,12)
     },
 };
 
@@ -64,7 +64,6 @@ Your home for used houseplants!
 
 void DisplayAllPlants()
 {
-    // Console.WriteLine("\nYou chose option 1\n");
     Console.WriteLine("Plants List:");
 
     for (int i = 0; i < plants.Count; i++)
@@ -77,7 +76,6 @@ void DisplayAllPlants()
 
 void PostAPlant()
 {
-    // Console.WriteLine("\nYou chose option 2\n");
     Console.WriteLine("\nPlease enter a species:\n");
 
     Plant newPlant = new Plant();
@@ -86,10 +84,6 @@ void PostAPlant()
     newPlant.Species = Console.ReadLine().Trim();
 
 
-    // Console.WriteLine("Enter the plant's light needs (1 for low light, 5 for heavy light)\n");
-    // newPlant.LightNeeds = int.Parse(Console.ReadLine().Trim());
-
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     int lightNeeds = 0;
 
     do
@@ -112,7 +106,7 @@ void PostAPlant()
     } while (lightNeeds < 1 || lightNeeds > 5);
 
     newPlant.LightNeeds = lightNeeds;
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
     Console.WriteLine("\nEnter an asking price:\n");
     newPlant.AskingPrice = decimal.Parse(Console.ReadLine().Trim());
@@ -141,31 +135,6 @@ void PostAPlant()
 
 void AdoptAPlant()
 {
-    // List<Plant> availablePlants = new List<Plant>();
-
-    // foreach (Plant plant in plants)
-    // {
-    //     if (plant.Sold == false && plant.AvailableUntil >= DateTime.Now)
-    //     {
-    //         availablePlants.Add(plant);
-    //     }
-    // }
-
-    // for (int i = 0; i < availablePlants.Count; i++)
-    // {
-    //     Console.WriteLine($"{i + 1}. {availablePlants[i].Species} in {availablePlants[i].City} {(availablePlants[i].Sold ? $"was sold for {availablePlants[i].AskingPrice} dollars" : $"is available for {availablePlants[i].AskingPrice} dollars")}, Expiration Date: {availablePlants[i].AvailableUntil}\n");
-    // }
-
-    // List<Plant> availablePlants = new List<Plant>();
-
-    // for (int i = 0; i < plants.Count; i++)
-    // {
-    //     if (plants[i].Sold == false && plants[i].AvailableUntil >= DateTime.Now)
-    //     {
-    //         availablePlants.Add(plants[i]);
-    //     }
-    // }
-
     for (int i = 0; i < plants.Count; i++)
     {
         if (!plants[i].Sold && plants[i].AvailableUntil >= DateTime.Now)
@@ -209,7 +178,6 @@ void AdoptAPlant()
 
 void DeListAPlant()
 {
-    // Console.WriteLine("\nYou chose option 4\n");
     for (int i = 0; i < plants.Count; i++)
     {
         Console.WriteLine($"{i + 1}. {plants[i].Species}");
@@ -273,15 +241,76 @@ void SearchByLightNeeds()
     }
 }
 
+void PlantStatistics()
+{
+    Console.WriteLine("\u001b[4mExtraVert Statistics\u001b[0m");
+
+    // Lowest price plant name
+    List<Plant> availablePlants = new List<Plant>();
+
+    foreach (Plant plant in plants)
+    {
+        if (plant.Sold == false && plant.AvailableUntil >= DateTime.Now)
+        {
+            availablePlants.Add(plant);
+        }
+    }
+
+    Plant cheapestPlant = availablePlants.OrderBy(plant => plant.AskingPrice).First();
+
+    Console.WriteLine($"\n - The cheapest plant available is: \u001b[4m{cheapestPlant.Species}\u001b[0m with a price of \u001b[4m${cheapestPlant.AskingPrice}\u001b[0m\n");
+
+
+    // Number of Plants Available (not sold, and still available)
+    Console.WriteLine($" - The number of plants currently available is: \u001b[4m{availablePlants.Count}\u001b[0m\n");
+
+
+    // Name of plant with highest light needs
+    List<Plant> plantsWithFiveLightNeeds = new List<Plant>();
+
+    foreach (Plant plant in availablePlants)
+    {
+        if (plant.LightNeeds == 5)
+        {
+            plantsWithFiveLightNeeds.Add(plant);
+        }
+    }
+    Console.Write($" - The number of plants with a light need of 5 is: \u001b[4m{plantsWithFiveLightNeeds.Count}\u001b[0m\n");
+
+
+    // Average light needs
+    double averageLightNeeds = availablePlants.Average(plant => plant.LightNeeds);
+
+    Console.WriteLine($"\n - The average light need of available plants is: \u001b[4m{averageLightNeeds}\u001b[0m");
+
+
+    // Percentage of plants adopted
+    int plantsCount = plants.Count;
+    double plantsAdoptedCount = 0;
+
+    foreach (Plant plant in plants)
+    {
+        if (plant.Sold == true)
+        {
+            plantsAdoptedCount++;
+        }
+    }
+    double plantsAdoptedPercentage = plantsAdoptedCount / plantsCount * 100;
+
+    Console.Write($"\n - The percentage of plants that have been adopted overall is \u001b[4m{plantsAdoptedPercentage}%\u001b[0m\n");
+}
+
 void Menu()
 {
-    Console.WriteLine(@"Main Menu:
+    Console.WriteLine(@"
+Main Menu:
 1. Display all plants
 2. Post a plant to be adopted
 3. Adopt a plant
 4. De-List a plant
 5. View a RANDOM Plant
 6. Search Plant by Light Needs
+7. See Plant Statistics
 0. Exit
 
 Please choose an option:");
@@ -319,6 +348,11 @@ Please choose an option:");
         case "6":
             Console.Clear();
             SearchByLightNeeds();
+            Menu();
+            break;
+        case "7":
+            Console.Clear();
+            PlantStatistics();
             Menu();
             break;
         case "0":
