@@ -407,8 +407,8 @@ string PlantDetails(Plant plant)
 
 void App()
 {
-    Console.WriteLine(greeting);
     Console.Clear();
+    Console.WriteLine(greeting);
     Menu();
 }
 
